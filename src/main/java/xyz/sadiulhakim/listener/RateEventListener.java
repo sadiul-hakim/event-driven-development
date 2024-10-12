@@ -9,8 +9,10 @@ import xyz.sadiulhakim.event.CurrencyEvent;
 @Component
 public class RateEventListener {
 
-	//@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
-	@TransactionalEventListener
-	@Log(printParamsValues=true,callMethodWithNoParamsToString="getRate")
-	public void processEvent(CurrencyEvent event){ }
+    //@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    @TransactionalEventListener
+    @Log(printParamsValues = true, callMethodWithNoParamsToString = "getRate")
+    public void processEvent(CurrencyEvent event) {
+        System.out.println("CurrencyEvent is published with code :: "+event.getRate().getCode());
+    }
 }
