@@ -12,3 +12,4 @@
 5. Use JmsTemplate to send Message
 6. Use MessageListener to consume message
 7. Alternatively use @JmsListener(destination = "${}") to consume message. `In this case no need to configure MessageListenerContainer`.
+8. Use @SendTo to send feedback to the sender

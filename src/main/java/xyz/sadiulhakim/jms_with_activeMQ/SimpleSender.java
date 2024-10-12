@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class SimpleSender {
     private final JmsTemplate jmsTemplate;
 
-    public void sendMessage(String description, String message) {
-        jmsTemplate.convertAndSend(description, message);
+    public void sendMessage(String destination, String message) {
+        jmsTemplate.convertAndSend(destination, message);
     }
 }
