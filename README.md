@@ -51,4 +51,4 @@ Web Socket uses In Memory broker by default. We can use ActiveMQ as `message bro
 
 ***A message broker is a software intermediary that facilitates communication between different systems or components by
 transmitting messages between them. It acts as a middleman that ensures messages are routed correctly, delivered
-efficiently, and handled reliably, even in complex distributed systems.***
+efficiently, and handled reliably, even in complex distributed systems. In a messaging system using a message broker, you can have multiple topics and brokers.***
