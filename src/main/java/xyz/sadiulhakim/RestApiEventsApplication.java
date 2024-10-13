@@ -42,5 +42,11 @@ public class RestApiEventsApplication implements CommandLineRunner {
         rateSender.send(jmsProperties.getRateQueue(), jpyDTO);
         rateSender.send(jmsProperties.getRateQueue(), mxnDTO);
         rateSender.send(jmsProperties.getRateQueue(), gbpDTO);
+
+        // Send to topic
+        rateSender.send(jmsProperties.getTopic(), eurDTO);
+        rateSender.send(jmsProperties.getTopic(), jpyDTO);
+        rateSender.send(jmsProperties.getTopic(), mxnDTO);
+        rateSender.send(jmsProperties.getTopic(), gbpDTO);
     }
 }
