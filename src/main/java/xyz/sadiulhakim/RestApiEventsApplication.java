@@ -3,7 +3,9 @@ package xyz.sadiulhakim;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -14,12 +16,23 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandler;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.RestTemplateXhrTransport;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.Transport;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 import xyz.sadiulhakim.config.JmsProperties;
 import xyz.sadiulhakim.domain.Rate;
 import xyz.sadiulhakim.low.level.web_socket.LlWebSocketHandler;
@@ -27,6 +40,7 @@ import xyz.sadiulhakim.rate.RateDTO;
 import xyz.sadiulhakim.jms_with_activeMQ.SimpleSender;
 import xyz.sadiulhakim.rate.RateSender;
 import xyz.sadiulhakim.service.CurrencyService;
+import xyz.sadiulhakim.withSockjsAndStomp.ChatMessage;
 
 @RequiredArgsConstructor
 @SpringBootApplication
@@ -83,5 +97,30 @@ public class RestApiEventsApplication implements CommandLineRunner {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    private void sendSockjsRequestFromJava() throws ExecutionException, InterruptedException {
+        String empty = "";
+        String url = "ws://localhost:9091/stomp-endpoint";
+
+        List<Transport> transports = Arrays.asList(
+                new WebSocketTransport(new StandardWebSocketClient()),
+                new RestTemplateXhrTransport(new RestTemplate()));
+
+
+        SockJsClient sockJsClient = new SockJsClient(transports);
+        WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
+        StompSessionHandler handler = new StompSessionHandlerAdapter() {
+            @Override
+            public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
+                System.out.println("#### >>> ");
+            }
+        };
+
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        ListenableFuture<StompSession> future = stompClient.connect(url, handler, empty);
+
+        StompSession session = future.get();
+        session.send("/my-app/chat-room", new ChatMessage("Hello there..."));
     }
 }
