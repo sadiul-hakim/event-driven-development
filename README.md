@@ -44,3 +44,11 @@ would subscribe to that topic and listen from that.***
 
 1. Put properties in file
 2. Configure endpoint,prefix,destinationPrefix
+
+Web Socket uses In Memory broker by default. We can use ActiveMQ as `message broker`.
+
+### Broker
+
+***A message broker is a software intermediary that facilitates communication between different systems or components by
+transmitting messages between them. It acts as a middleman that ensures messages are routed correctly, delivered
+efficiently, and handled reliably, even in complex distributed systems.***
