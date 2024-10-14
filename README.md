@@ -33,6 +33,8 @@ would subscribe to that topic and listen from that.***
 
 # WebSocket
 
+***In Web Socket, when i someone connect to the socket and send a message we can receive that message and we can broadcast it to eventone, we can send to a specific user etc.***
+
 ## Low Level
 
 1. Add dependency
